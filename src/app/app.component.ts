@@ -51,6 +51,7 @@ export class AppComponent implements OnInit {
     ];
     const reply = await this.engine!.chat.completions.create({ messages });
     this.reply.set(reply.choices[0].message.content ?? '');
+    console.log(reply.usage);
   }
 
   addTodo(text: string) {
