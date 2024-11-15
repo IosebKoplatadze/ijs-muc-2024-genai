@@ -1,6 +1,14 @@
 <app-nav>
   <router-outlet></router-outlet>
 
+  <input type="text" #input>
+  <button (click)="addTodo(input.value)">Add</button>
+  <ul>
+    @for(todo of todos(); track $index) {
+      <li>{{ todo.text }}</li>
+    }
+  </ul>
+
   <div><progress [value]="progress()"></progress></div>
   <input type="text" #prompt>
   <button (click)="runPrompt(prompt.value)" [disabled]="!ready()">  Ask</button>

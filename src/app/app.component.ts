@@ -3,6 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import {NavComponent} from './nav/nav.component';
 import {ChatCompletionMessageParam, CreateMLCEngine, MLCEngine} from '@mlc-ai/web-llm';
 
+interface Todo {
+  text: string;
+  done: boolean;
+}
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -16,6 +21,7 @@ export class AppComponent implements OnInit {
   protected readonly progress = signal(0);
   protected readonly ready = signal(false);
   protected readonly reply = signal('');
+  protected readonly todos = signal<Todo[]>([]);
   protected engine?: MLCEngine;
 
   async ngOnInit() {
@@ -36,5 +42,9 @@ export class AppComponent implements OnInit {
     ];
     const reply = await this.engine!.chat.completions.create({ messages });
     this.reply.set(reply.choices[0].message.content ?? '');
+  }
+
+  addTodo(text: string) {
+    this.todos.update(todos => [...todos, { done: false, text }]);
   }
 }
