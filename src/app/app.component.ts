@@ -1,8 +1,9 @@
-import {Component, OnInit, signal} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {NavComponent} from './nav/nav.component';
 import {ChatCompletionMessageParam, CreateMLCEngine, MLCEngine} from '@mlc-ai/web-llm';
 import {join} from '@angular/compiler-cli';
+import {NonNullableFormBuilder, ReactiveFormsModule} from '@angular/forms';
 
 interface Todo {
   text: string;
@@ -12,7 +13,7 @@ interface Todo {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavComponent],
+  imports: [RouterOutlet, NavComponent, ReactiveFormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -62,4 +63,12 @@ export class AppComponent implements OnInit {
     this.todos.update(todos => todos.map((todo, todoIndex) =>
       todoIndex === index ? { ...todo, done: !todo.done } : todo));
   }
+
+  private fb = inject(NonNullableFormBuilder);
+  protected formGroup = this.fb.group({
+    name: '',
+    city: ''
+  });
+
+  async fillForm(value: string) {}
 }
