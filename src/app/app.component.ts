@@ -2,6 +2,7 @@ import {Component, OnInit, signal} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {NavComponent} from './nav/nav.component';
 import {ChatCompletionMessageParam, CreateMLCEngine, MLCEngine} from '@mlc-ai/web-llm';
+import {join} from '@angular/compiler-cli';
 
 interface Todo {
   text: string;
@@ -37,7 +38,10 @@ export class AppComponent implements OnInit {
   async runPrompt(value: string) {
     await this.engine!.resetChat();
     this.reply.set('…');
+    const systemPrompt = `Here's the user's todo list:
+      ${this.todos().map(todo => `* ${todo.text} (${todo.done ? 'done' : 'not done'})`).join('\n')}`;
     const messages: ChatCompletionMessageParam[] = [
+      { role: "system", content: systemPrompt },
       { role: "user", content: value }
     ];
     const reply = await this.engine!.chat.completions.create({ messages });
@@ -46,5 +50,10 @@ export class AppComponent implements OnInit {
 
   addTodo(text: string) {
     this.todos.update(todos => [...todos, { done: false, text }]);
+  }
+
+  toggleTodo(index: number) {
+    this.todos.update(todos => todos.map((todo, todoIndex) =>
+      todoIndex === index ? { ...todo, done: !todo.done } : todo));
   }
 }
