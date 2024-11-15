@@ -1,3 +1,8 @@
 <app-nav>
   <router-outlet></router-outlet>
+
+  <div><progress [value]="progress()"></progress></div>
+  <input type="text" #prompt>
+  <button (click)="runPrompt(prompt.value)" [disabled]="!ready()">  Ask</button>
+
 </app-nav>
