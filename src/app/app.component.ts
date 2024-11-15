@@ -70,7 +70,18 @@ export class AppComponent implements OnInit {
     city: ''
   });
 
-  async fillForm(value: string) {}
+  async fillForm(value: string) {
+    const messages: ChatCompletionMessageParam[] = [{
+      role: 'system',
+      content: `Extract the information to a JSON object of this shape:
+      ${JSON.stringify(this.formGroup.value)} Do not add any other text.`
+    }, {
+      role: 'user',
+      content: value
+    }];
+    const reply = await this.engine!.chat.completions.create({ messages });
+    this.formGroup.setValue(JSON.parse(reply.choices[0].message.content ?? ''));
+  }
 
   async paste() {
     const content = await navigator.clipboard.readText();
