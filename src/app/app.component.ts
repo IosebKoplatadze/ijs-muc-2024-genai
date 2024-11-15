@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
   }
 
   async runPrompt(value: string) {
-    await this.engine!.resetChat();
+    // await this.engine!.resetChat();
     this.reply.set('…');
     const systemPrompt = `You are a helpful assistant.
     The user will ask questions about their todo list.
@@ -46,13 +46,18 @@ export class AppComponent implements OnInit {
     Here's the user's todo list:
     ${this.todos().map(todo => `* ${todo.text} (this todo is ${todo.done ? 'done' : 'not done'})`).join('\n')}
     ${this.todos().length === 0 ? 'The list is empty, there are no todos.' : ''}`;
-    const messages: ChatCompletionMessageParam[] = [
-      { role: "system", content: systemPrompt },
-      { role: "user", content: value }
-    ];
-    const reply = await this.engine!.chat.completions.create({ messages });
-    this.reply.set(reply.choices[0].message.content ?? '');
-    console.log(reply.usage);
+
+    const session = await window.ai.languageModel.create({ systemPrompt });
+    const reply = await session.prompt(value);
+    this.reply.set(reply);
+    //
+    // const messages: ChatCompletionMessageParam[] = [
+    //   { role: "system", content: systemPrompt },
+    //   { role: "user", content: value }
+    // ];
+    // const reply = await this.engine!.chat.completions.create({ messages });
+    // this.reply.set(reply.choices[0].message.content ?? '');
+    // console.log(reply.usage);
   }
 
   addTodo(text: string) {
@@ -71,16 +76,21 @@ export class AppComponent implements OnInit {
   });
 
   async fillForm(value: string) {
-    const messages: ChatCompletionMessageParam[] = [{
-      role: 'system',
-      content: `Extract the information to a JSON object of this shape:
-      ${JSON.stringify(this.formGroup.value)} Do not add any other text.`
-    }, {
-      role: 'user',
-      content: value
-    }];
-    const reply = await this.engine!.chat.completions.create({ messages });
-    this.formGroup.setValue(JSON.parse(reply.choices[0].message.content ?? ''));
+    const session = await window.ai.languageModel.create({ systemPrompt: `Extract the information to a JSON object of this shape:
+      ${JSON.stringify(this.formGroup.value)} Do not add any other text.` });
+    const reply = await session.prompt(value);
+    this.formGroup.setValue(JSON.parse(reply));
+
+    // const messages: ChatCompletionMessageParam[] = [{
+    //   role: 'system',
+    //   content: `Extract the information to a JSON object of this shape:
+    //   ${JSON.stringify(this.formGroup.value)} Do not add any other text.`
+    // }, {
+    //   role: 'user',
+    //   content: value
+    // }];
+    // const reply = await this.engine!.chat.completions.create({ messages });
+    // this.formGroup.setValue(JSON.parse(reply.choices[0].message.content ?? ''));
   }
 
   async paste() {

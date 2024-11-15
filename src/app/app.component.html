@@ -14,11 +14,11 @@
 
   <div><progress [value]="progress()"></progress></div>
   <input type="text" #prompt>
-  <button (click)="runPrompt(prompt.value)" [disabled]="!ready()">  Ask</button>
+  <button (click)="runPrompt(prompt.value)">  Ask</button>
   <pre>{{ reply() }}</pre>
 
   <input type="text" #form>
-  <button (click)="fillForm(form.value)" [disabled]="!ready()">Fill form</button>
+  <button (click)="fillForm(form.value)">Fill form</button>
   <button (click)="paste()" [disabled]="!ready()">Paste</button>
   <form [formGroup]="formGroup">
     <input placeholder="Name" formControlName="name">
