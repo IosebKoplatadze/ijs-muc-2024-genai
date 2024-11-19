@@ -1,6 +1,6 @@
 # Making Angular Apps Smarter with Generative AI: Local and Offline-capable (Hands-on)
 
-[International JavaScript Conference Munich 2024]([https://javascript-days.de/angular/](https://javascript-conference.com/munich/), November 15, 2024, 09:00–16:30
+[International JavaScript Conference Munich 2024](https://javascript-conference.com/munich/), November 15, 2024, 09:00–16:30
 
 Trainer: Christian Liebel ([@christianliebel](https://x.com/christianliebel))
 
