@@ -1,0 +1,8 @@
+div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100% - 64px);
+  padding: 40px;
+  box-sizing: border-box;
+}

@@ -1,0 +1,20 @@
+<div>
+  <pre>{{ replay() }}</pre>
+
+  <div>
+    <mat-progress-bar [value]="progress() * 100"> </mat-progress-bar>
+    <form
+      style="display: flex"
+      (submit)="
+        $event.preventDefault(); onSubmit(prompt.value); prompt.value = ''
+      "
+      (reset)="$event.preventDefault(); onReset(); prompt.value = ''"
+    >
+      <input type="text" style="flex: 1" #prompt autocomplete="prompt" />
+      <button type="submit" [disabled]="!ready() || started()">Ask</button>
+      <button type="reset" [disabled]="!replay().length">
+        {{ started() ? "Stop" : "Clear" }}
+      </button>
+    </form>
+  </div>
+</div>

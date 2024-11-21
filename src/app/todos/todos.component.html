@@ -1,0 +1,19 @@
+<form
+  (submit)="
+    $event.preventDefault(); onAddTodo(todoInput.value); todoInput.value = ''
+  "
+>
+  <input type="text" #todoInput autocomplete="todo" />
+  <button type="submit">Add</button>
+  <ul>
+    @for (todo of todos(); track todo) {
+    <li>
+      <label (change)="onToggleCompleted(todo.id)">
+        <input type="checkbox" [checked]="todo.completed" />
+        {{ todo.title }}
+      </label>
+      <button type="button" (click)="onRemoveTodo(todo.id)">X</button>
+    </li>
+    }
+  </ul>
+</form>
