@@ -1,19 +1,22 @@
 <div>
-  <pre>{{ replay() }}</pre>
+  <pre>{{ aiService.replay() }}</pre>
 
   <div>
-    <mat-progress-bar [value]="progress() * 100"> </mat-progress-bar>
+    <mat-progress-bar [value]="aiService.progress() * 100"> </mat-progress-bar>
     <form
       style="display: flex"
-      (submit)="
-        $event.preventDefault(); onSubmit(prompt.value); prompt.value = ''
-      "
-      (reset)="$event.preventDefault(); onReset(); prompt.value = ''"
+      (submit)="onSubmit($event, prompt)"
+      (reset)="onReset($event, prompt)"
     >
       <input type="text" style="flex: 1" #prompt autocomplete="prompt" />
-      <button type="submit" [disabled]="!ready() || started()">Ask</button>
-      <button type="reset" [disabled]="!replay().length">
-        {{ started() ? "Stop" : "Clear" }}
+      <button
+        type="submit"
+        [disabled]="!aiService.ready() || aiService.started()"
+      >
+        Ask
+      </button>
+      <button type="reset" [disabled]="!aiService.replay().length">
+        {{ aiService.started() ? "Stop" : "Clear" }}
       </button>
     </form>
   </div>

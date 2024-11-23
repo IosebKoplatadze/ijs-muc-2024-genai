@@ -31,10 +31,10 @@ export class TodosService {
     });
   }
 
-  toggleCompleted(id: number, completed?: boolean): void {
+  toggleCompleted(ids: number[], completed?: boolean): void {
     this.todos.update((todos) =>
       todos.map((todo) => {
-        if (todo.id === id) {
+        if (ids.includes(todo.id)) {
           todo.completed = completed ?? !todo.completed;
         }
         return todo;
@@ -42,8 +42,10 @@ export class TodosService {
     );
   }
 
-  removeTodo(id: number): void {
-    this.todos.update((todos) => todos.filter((todo) => todo.id !== id));
+  removeTodo(ids: number[]): void {
+    this.todos.update((todos) =>
+      todos.filter((todo) => !ids.includes(todo.id))
+    );
   }
 
   private recoverTodos(): void {

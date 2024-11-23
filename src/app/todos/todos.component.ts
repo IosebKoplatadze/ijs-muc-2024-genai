@@ -20,10 +20,10 @@ export class TodosComponent {
   }
 
   onToggleCompleted(id: number): void {
-    this.todosService.toggleCompleted(id);
+    this.todosService.toggleCompleted([id]);
   }
 
   onRemoveTodo(id: number): void {
-    this.todosService.removeTodo(id);
+    this.todosService.removeTodo([id]);
   }
 }
